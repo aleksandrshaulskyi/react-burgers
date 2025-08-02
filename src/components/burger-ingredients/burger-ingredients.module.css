@@ -1,0 +1,24 @@
+.section {
+    width: 600px;
+    height: 912px;
+}
+
+.tabsWrapper {
+    display: flex;
+}
+
+.tab {
+    flex: 1;
+}
+
+.mainIngredientsContainer {
+    height: 70vh;
+    overflow-y: auto;
+}
+
+.ingredientsContainer {
+    display: flex;
+    column-gap: 24px;
+    row-gap: 32px;
+    flex-wrap: wrap;
+}

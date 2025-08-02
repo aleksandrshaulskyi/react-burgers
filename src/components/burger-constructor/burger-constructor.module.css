@@ -1,0 +1,28 @@
+.section {
+    width: 600px;
+    height: 912px;
+}
+
+.constructorContainer {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.elementContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.priceContainer {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.priceGroup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

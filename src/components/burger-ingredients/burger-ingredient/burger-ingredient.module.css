@@ -1,0 +1,28 @@
+.ingredientContainer {
+    position: relative;
+    flex: 0 0 calc(50% - 12px);
+}
+
+.counter {
+    position: absolute;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    background-color: #4C4CFF;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.imageContainer {
+    text-align: center;
+}
+
+.priceContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.textContainer {
+    text-align: center;
+}
