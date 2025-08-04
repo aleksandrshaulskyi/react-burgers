@@ -2,7 +2,7 @@
     overflow-y: hidden;
 }
 
-.content-wrapper {
+.contentWrapper {
     display: flex;
     justify-content: space-around;
 }

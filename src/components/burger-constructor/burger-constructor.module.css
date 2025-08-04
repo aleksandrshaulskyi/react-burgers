@@ -6,7 +6,6 @@
 .constructorContainer {
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
 }
 
 .elementContainer {
@@ -25,4 +24,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.constructorScrolledContainer {
+    height: 464px;
+    overflow-y: auto;
 }
