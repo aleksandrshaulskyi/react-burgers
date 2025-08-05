@@ -1,0 +1,23 @@
+.content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.container {
+  display: flex;
+  flex: 1;
+}
+
+.containerLeft {
+  composes: container;
+}
+
+.containerCenter {
+  composes: container;
+  justify-content: center;
+}
+
+.containerRight {
+  composes: container;
+  justify-content: end;
+}
