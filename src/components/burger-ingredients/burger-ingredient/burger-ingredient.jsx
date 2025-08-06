@@ -35,8 +35,9 @@ export default function BurgerIngredient({ image, price, name, counter, onClick 
 }
 
 BurgerIngredient.propTypes = {
-  image: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-  counter: PropTypes.number // optional
+    image: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    counter: PropTypes.number,
+    onClick: PropTypes.func.isRequired
 };

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom'
 import { useEffect } from 'react'
 
@@ -50,3 +51,9 @@ export default function Modal({ header, children, handleClose }) {
         modalRoot
     )
 }
+
+Modal.propTypes = {
+    header: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
+    handleClose: PropTypes.func.isRequired
+};
