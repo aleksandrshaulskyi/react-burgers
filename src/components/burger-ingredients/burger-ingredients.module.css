@@ -30,28 +30,3 @@
     row-gap: 32px;
     flex-wrap: wrap;
 }
-
-.modalContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.modalNameContainer {
-    text-align: center;
-}
-
-.modalInfoContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    column-gap: 24px;
-}
-
-.modalInfoItemContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
