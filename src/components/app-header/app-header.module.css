@@ -8,6 +8,10 @@
   flex: 1;
 }
 
+.navItemContainer {
+  cursor: pointer;
+}
+
 .containerLeft {
   composes: container;
 }
