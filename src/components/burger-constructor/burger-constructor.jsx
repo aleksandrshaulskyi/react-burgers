@@ -44,8 +44,8 @@ export default function BurgerConstructor() {
                     <div className={BurgerConstructorStyles.constructorScrolledContainer}>
                         {
                             elements.map(
-                                element => (
-                                    <div className='mb-4 ml-8'>
+                                (element, index) => (
+                                    <div key={index} className='mb-4 ml-8'>
                                         <div className={BurgerConstructorStyles.elementContainer}>
                                             <DragIcon type='primary' />
                                             <ConstructorElement text={element.text} price={element.price} thumbnail={element.thumbnail} />
@@ -74,16 +74,14 @@ export default function BurgerConstructor() {
                     </div>
                 </div>
             </div>
-        <div style={{ overflow: 'hidden' }}>
-            {
-                orderDetailsIsVisible &&
-                    (
-                    <Modal header='' handleClose={handleClose}>
-                        <OrderDetails />
-                    </Modal>
-                    )
-            }
-        </div>
+        {
+            orderDetailsIsVisible &&
+                (
+                <Modal header='' handleClose={handleClose}>
+                    <OrderDetails />
+                </Modal>
+                )
+        }
         </section>   
     )
 }

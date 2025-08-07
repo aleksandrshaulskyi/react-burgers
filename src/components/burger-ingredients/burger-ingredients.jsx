@@ -116,15 +116,13 @@ export default function BurgerIngredients(props) {
                 </div>
             </div>
 
-        <div style={{ overflow: 'hidden' }}>
-            {
-                selectedIngredient && (
-                    <Modal header='Детали ингридиента' handleClose={handleClose}>
-                        <IngredientDetails selectedIngredient={selectedIngredient} />
-                    </Modal>
-                )
-            }
-        </div>
+        {
+            selectedIngredient && (
+                <Modal header='Детали ингридиента' handleClose={handleClose}>
+                    <IngredientDetails selectedIngredient={selectedIngredient} />
+                </Modal>
+            )
+        }
         </section>
     )
 }

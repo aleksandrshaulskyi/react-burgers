@@ -27,7 +27,6 @@ function App() {
           }
 
           const response_data = await response.json()
-          console.log(response_data)
 
           setData(response_data.data)
         } catch(error) {
@@ -43,13 +42,11 @@ function App() {
 
   return (
     <main>
-      <div style={{ overflow: 'hidden' }}>
         {
           notificationIsVisible && (
             <Notification error={error} handleClose={() => setNotificationIsVisible(false)} />
           )
         }
-      </div>
       <AppHeader />
       <div className={AppStyles.contentWrapper}>
         <BurgerIngredients data={data}/>
