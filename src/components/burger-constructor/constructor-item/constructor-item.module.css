@@ -1,0 +1,13 @@
+.elementContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dragging {
+  opacity: 0.3;
+}
+
+.over {
+  outline: 1px dashed #4c4cff;
+}

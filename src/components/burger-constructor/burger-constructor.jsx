@@ -1,87 +1,150 @@
-import { useState } from 'react'
+import { useMemo, useState, useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useDrop } from 'react-dnd'
 
-import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import BurgerConstructorStyles from './burger-constructor.module.css'
 
-import BunThumbN200 from '../../images/name=Краторная булка N-200imobile.png'
-import FillingThumbMeat from '../../images/name=Мясо бессмертных моллюсков Protostomiamobile.png'
-import FillingThumbFalenialTree from '../../images/name=Плоды фалленианского дереваmobile.png'
-import FillingThumbMineralRings from '../../images/name=Хрустящие минеральные кольцаmobile.png'
+import { INGREDIENT_ADDED, INGREDIENT_MOVED } from '../../services/actions/constructor'
 import Modal from '../modal/modal'
 import OrderDetails from './order-details/order-details'
-import SauceThumbTraditional from '../../images/name=Соус традиционный галактическийmobile.png'
-
+import placeOrder from '../../utils/place-order'
+import ConstructorItem from './constructor-item/constructor-item'
 
 export default function BurgerConstructor() {
-    const [orderDetailsIsVisible, setOrderDetailsIsVisible] = useState(false)
+	const dispatch = useDispatch()
 
-    const handleOpen = () => {
-        setOrderDetailsIsVisible(true)
-    }
+	const constructorIngredients = useSelector(
+		state => state.burgerConstructor.constructorIngredients
+	)
+	const orderData = useSelector(state => state.order.orderData)
 
-    const handleClose = () => {
-        setOrderDetailsIsVisible(false)
-    }
+	const bun = useMemo(
+		() => constructorIngredients.find(it => it.type === 'bun') || null,
+		[constructorIngredients]
+	)
+	const fillings = useMemo(
+		() => constructorIngredients.filter(it => it.type !== 'bun'),
+		[constructorIngredients]
+	)
 
-    const elements = [
-        {type: null, isLocked: null, text: 'Соус традиционный галактический', price: 30, thumbnail: SauceThumbTraditional},
-        {type: null, isLocked: null, text: 'Мясо бессмертных молюсков Protostomia', price: 300, thumbnail: FillingThumbMeat},
-        {type: null, isLocked: null, text: 'Плоды Фалленианского дерева', price: 80, thumbnail: FillingThumbFalenialTree},
-        {type: null, isLocked: null, text: 'Хрустящие минеральные кольца', price: 80, thumbnail: FillingThumbMineralRings},
-        {type: null, isLocked: null, text: 'Хрустящие минеральные кольца', price: 80, thumbnail: FillingThumbMineralRings}
-    ]
-    return(
-        <section className={BurgerConstructorStyles.section}>
-            <div className='mt-25 mr-4 ml-4'>
-                <div className={BurgerConstructorStyles.constructorContainer}>
-                    <div className='mb-4 ml-8'>
-                        <div className={BurgerConstructorStyles.elementContainer}>
-                            <DragIcon type='primary' />
-                            <ConstructorElement type='top' isLocked={true} text='Краторная булка N-200i (верх)' price={20} thumbnail={BunThumbN200} />
-                        </div>
-                    </div>
-                    <div className={BurgerConstructorStyles.constructorScrolledContainer}>
-                        {
-                            elements.map(
-                                (element, index) => (
-                                    <div key={index} className='mb-4 ml-8'>
-                                        <div className={BurgerConstructorStyles.elementContainer}>
-                                            <DragIcon type='primary' />
-                                            <ConstructorElement text={element.text} price={element.price} thumbnail={element.thumbnail} />
-                                        </div>
-                                    </div>
-                                )
-                            )
-                        }
-                    </div>
-                    <div className='mb-4 ml-8'>
-                        <div className={BurgerConstructorStyles.elementContainer}>
-                            <DragIcon type='primary' />
-                            <ConstructorElement type='bottom' isLocked={true} text='Краторная булка N-200i (низ)' price={20} thumbnail={BunThumbN200} />
-                        </div>
-                    </div>
-                </div>
-                <div className='mt-10'>
-                    <div className={BurgerConstructorStyles.priceContainer}>
-                        <div className='mr-10'>
-                            <div className={BurgerConstructorStyles.priceGroup}>
-                                <p className='text text_type_digits-medium'>600</p>
-                                <CurrencyIcon />
-                            </div>
-                        </div>
-                        <Button htmlType='button' type='primary' size='large' onClick={handleOpen}>Оформить заказ</Button>
-                    </div>
-                </div>
-            </div>
-        {
-            orderDetailsIsVisible &&
-                (
-                <Modal header='' handleClose={handleClose}>
-                    <OrderDetails />
-                </Modal>
-                )
-        }
-        </section>   
-    )
+	const moveFilling = useCallback((from, to) => {
+		dispatch({ type: INGREDIENT_MOVED, payload: { from, to } })
+	}, [dispatch])
+
+	const [{ isOver }, dropRef] = useDrop(() => ({
+		accept: 'ingredient',
+		collect: monitor => ({ isOver: monitor.isOver() }),
+		drop: (item) => {
+		dispatch({ type: INGREDIENT_ADDED, payload: item })
+		},
+	}), [dispatch])
+
+	const [orderDetailsIsVisible, setOrderDetailsIsVisible] = useState(false)
+
+	const total = useMemo(() => {
+		const fillingsSum = fillings.reduce((acc, it) => acc + (it?.price || 0), 0)
+		const bunPrice = bun ? bun.price * 2 : 0
+		return fillingsSum + bunPrice
+	}, [fillings, bun])
+
+	const ingredientIds = useMemo(() => {
+		if (!bun && fillings.length === 0) return []
+		const ids = []
+		if (bun) ids.push(bun._id)
+		fillings.forEach(f => ids.push(f._id))
+		if (bun) ids.push(bun._id)
+		return ids
+	}, [bun, fillings])
+
+	const handlePlaceOrder = useCallback(() => {
+		dispatch(placeOrder({'ingredients': ingredientIds}))
+	}, [dispatch, ingredientIds])
+
+	useEffect(() => {
+		if (orderData) setOrderDetailsIsVisible(true)
+	}, [orderData])
+
+	const className = `${BurgerConstructorStyles.constructorContainer} ${
+		isOver ? BurgerConstructorStyles.over : ''
+	}`
+
+	return (
+		<section className={BurgerConstructorStyles.section}>
+		<div className='mt-25 mr-4 ml-4'>
+			<div
+			className={className}
+			ref={dropRef}
+			>
+			{bun && (
+				<div className='mb-4 mr-8 ml-8'>
+				<div className={BurgerConstructorStyles.elementContainer}>
+					<ConstructorElement
+					type='top'
+					isLocked
+					text={`${bun.name} (верх)`}
+					price={bun.price}
+					thumbnail={bun.image}
+					/>
+				</div>
+				</div>
+			)}
+
+			<div className={BurgerConstructorStyles.constructorScrolledContainer}>
+				{fillings.map((element, index) => (
+				<div key={element.uid} className='mb-4 mr-8 ml-8'>
+					<ConstructorItem
+					element={element}
+					index={index}
+					moveFilling={moveFilling}
+					/>
+				</div>
+				))}
+			</div>
+
+			{bun && (
+				<div className='mb-4 mr-8 ml-8'>
+				<div className={BurgerConstructorStyles.elementContainer}>
+					<ConstructorElement
+					type='bottom'
+					isLocked
+					text={`${bun.name} (низ)`}
+					price={bun.price}
+					thumbnail={bun.image}
+					/>
+				</div>
+				</div>
+			)}
+			</div>
+
+			{constructorIngredients.length > 0 && (
+			<div className='mt-10'>
+				<div className={BurgerConstructorStyles.priceContainer}>
+				<div className='mr-10'>
+					<div className={BurgerConstructorStyles.priceGroup}>
+					<p className='text text_type_digits-medium'>{total}</p>
+					<CurrencyIcon />
+					</div>
+				</div>
+				<Button
+					htmlType='button'
+					type='primary'
+					size='large'
+					onClick={handlePlaceOrder}
+				>
+					Оформить заказ
+				</Button>
+				</div>
+			</div>
+			)}
+		</div>
+
+		{orderDetailsIsVisible && orderData && (
+			<Modal header='' handleClose={() => setOrderDetailsIsVisible(false)}>
+			<OrderDetails orderNumber={orderData.order.number} />
+			</Modal>
+		)}
+		</section>
+	)
 }

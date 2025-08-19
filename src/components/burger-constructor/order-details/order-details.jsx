@@ -3,12 +3,12 @@ import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-component
 import OrderDetailsStyles from './order-details.module.css'
 
 
-export default function OrderDetails() {
+export default function OrderDetails({ orderNumber }) {
     return (
         <div className={OrderDetailsStyles.wrapper}>
             <div className={OrderDetailsStyles.orderNumberContainer}>
                 <div className='mb-8'>
-                    <p className='text text_type_digits-large'>8888</p>
+                    <p className='text text_type_digits-large'>{orderNumber}</p>
                 </div>
             </div>
             <div className={OrderDetailsStyles.textContainer}>
