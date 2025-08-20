@@ -3,7 +3,7 @@ import { useDrag, useDrop } from 'react-dnd'
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import ConstructorItemStyles from './constructor-item.module.css'
 
-export default function ConstructorItem({ element, index, moveFilling }) {
+export default function ConstructorItem({ element, index, moveFilling, onRemove }) {
 	const ref = useRef(null)
 	const handleRef = useRef(null)
 
@@ -56,6 +56,7 @@ export default function ConstructorItem({ element, index, moveFilling }) {
 				text={element.name}
 				price={element.price}
 				thumbnail={element.image}
+				handleClose={() => onRemove?.(element.uid)}
 			/>
 		</div>
 	)

@@ -1,4 +1,4 @@
-import { INGREDIENT_ADDED, INGREDIENT_MOVED } from '../actions/constructor';
+import { INGREDIENT_ADDED, INGREDIENT_MOVED, INGREDIENT_REMOVED } from '../actions/constructor';
 
 
 const constructorInitialState = { constructorIngredients: [] };
@@ -39,7 +39,13 @@ export const constructorReducer = (state = constructorInitialState, action) => {
 		return { ...state, constructorIngredients: bun ? [bun, ...next] : next };
 
     }
-
+	case INGREDIENT_REMOVED: {
+      const { uid } = action.payload;
+      return {
+        ...state,
+        constructorIngredients: state.constructorIngredients.filter(it => it.uid !== uid)
+      }
+    }
 	default:
 		return state;
     }

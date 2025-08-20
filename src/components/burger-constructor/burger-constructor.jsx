@@ -6,7 +6,7 @@ import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-de
 
 import BurgerConstructorStyles from './burger-constructor.module.css'
 
-import { addIngredient, moveIngredient } from '../../services/actions/constructor'
+import { addIngredient, moveIngredient, removeIngredient } from '../../services/actions/constructor'
 import Modal from '../modal/modal'
 import OrderDetails from './order-details/order-details'
 import placeOrder from '../../utils/place-order'
@@ -31,6 +31,10 @@ export default function BurgerConstructor() {
 
 	const moveFilling = useCallback((from, to) => {
 		dispatch(moveIngredient(from, to))
+	}, [dispatch])
+
+	const handleRemoveFilling = useCallback((uid) => {
+		dispatch(removeIngredient(uid))
 	}, [dispatch])
 
 	const [{ isOver }, dropRef] = useDrop(() => ({
@@ -79,15 +83,15 @@ export default function BurgerConstructor() {
 			>
 			{bun && (
 				<div className='mb-4 mr-8 ml-8'>
-				<div className={BurgerConstructorStyles.elementContainer}>
-					<ConstructorElement
-					type='top'
-					isLocked
-					text={`${bun.name} (верх)`}
-					price={bun.price}
-					thumbnail={bun.image}
-					/>
-				</div>
+					<div className={BurgerConstructorStyles.elementContainer}>
+						<ConstructorElement
+						type='top'
+						isLocked
+						text={`${bun.name} (верх)`}
+						price={bun.price}
+						thumbnail={bun.image}
+						/>
+					</div>
 				</div>
 			)}
 
@@ -98,6 +102,7 @@ export default function BurgerConstructor() {
 					element={element}
 					index={index}
 					moveFilling={moveFilling}
+					onRemove={handleRemoveFilling}
 					/>
 				</div>
 				))}
@@ -105,15 +110,15 @@ export default function BurgerConstructor() {
 
 			{bun && (
 				<div className='mb-4 mr-8 ml-8'>
-				<div className={BurgerConstructorStyles.elementContainer}>
-					<ConstructorElement
-					type='bottom'
-					isLocked
-					text={`${bun.name} (низ)`}
-					price={bun.price}
-					thumbnail={bun.image}
-					/>
-				</div>
+					<div className={BurgerConstructorStyles.elementContainer}>
+						<ConstructorElement
+						type='bottom'
+						isLocked
+						text={`${bun.name} (низ)`}
+						price={bun.price}
+						thumbnail={bun.image}
+						/>
+					</div>
 				</div>
 			)}
 			</div>
@@ -142,7 +147,7 @@ export default function BurgerConstructor() {
 
 		{orderDetailsIsVisible && orderData && (
 			<Modal header='' handleClose={() => setOrderDetailsIsVisible(false)}>
-			<OrderDetails orderNumber={orderData.order.number} />
+				<OrderDetails orderNumber={orderData.order.number} />
 			</Modal>
 		)}
 		</section>
