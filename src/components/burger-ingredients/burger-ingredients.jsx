@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -9,8 +8,9 @@ import { SELECTED_INGREDIENT_CHANGED } from '../../services/actions/selected-ing
 import IngredientDetails from './ingredient-details/ingredient-details'
 import Modal from '../modal/modal'
 
-export default function BurgerIngredients({ data }) {
+export default function BurgerIngredients() {
 	const dispatch = useDispatch()
+	const ingredients = useSelector(state => state.ingredients.ingredients)
 	const selectedIngredient = useSelector(state => state.selectedIngredient.selectedIngredient)
 	const constructorIngredients = useSelector(state => state.burgerConstructor.constructorIngredients || [])
 
@@ -20,9 +20,9 @@ export default function BurgerIngredients({ data }) {
 	const fillingsRef = useRef(null)
 	const [activeTab, setActiveTab] = useState('buns')
 
-	const buns = data.filter(item => item.type === 'bun')
-	const sauces = data.filter(item => item.type === 'sauce')
-	const fillings = data.filter(item => item.type === 'main')
+	const buns = ingredients.filter(item => item.type === 'bun')
+	const sauces = ingredients.filter(item => item.type === 'sauce')
+	const fillings = ingredients.filter(item => item.type === 'main')
 
 	const counters = useMemo(() => {
 		const map = Object.create(null)
@@ -178,21 +178,4 @@ export default function BurgerIngredients({ data }) {
 		)}
 		</section>
 	)
-	}
-
-BurgerIngredients.propTypes = {
-	data: PropTypes.arrayOf(
-		PropTypes.shape({
-		_id: PropTypes.string.isRequired,
-		image: PropTypes.string.isRequired,
-		name: PropTypes.string.isRequired,
-		price: PropTypes.number.isRequired,
-		type: PropTypes.oneOf(['bun', 'sauce', 'main']).isRequired,
-		image_large: PropTypes.string,
-		calories: PropTypes.number,
-		proteins: PropTypes.number,
-		fat: PropTypes.number,
-		carbohydrates: PropTypes.number,
-		})
-	).isRequired,
 }

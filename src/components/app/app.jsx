@@ -11,9 +11,10 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients'
 import fetchIngredients from '../../utils/fetch-ingredients'
 import Notification from '../notification/notification'
 
+
 function App() {
   const dispatch = useDispatch()
-  const { ingredients, loading, error } = useSelector(state => state.ingredients)
+  const { loading, error } = useSelector(state => state.ingredients)
 
   const [notificationIsVisible, setNotificationIsVisible] = useState(false)
 
@@ -38,10 +39,8 @@ function App() {
           <div className={AppStyles.loader}>Loading...</div>
         ) : (
           <DndProvider backend={HTML5Backend}>
-            <>
-              <BurgerIngredients data={ingredients} />
-              <BurgerConstructor />
-            </>
+            <BurgerIngredients />
+            <BurgerConstructor />
           </DndProvider>
         )}
       </div>

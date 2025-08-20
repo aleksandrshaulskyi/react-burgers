@@ -6,7 +6,7 @@ import { Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-de
 
 import BurgerConstructorStyles from './burger-constructor.module.css'
 
-import { INGREDIENT_ADDED, INGREDIENT_MOVED } from '../../services/actions/constructor'
+import { addIngredient, moveIngredient } from '../../services/actions/constructor'
 import Modal from '../modal/modal'
 import OrderDetails from './order-details/order-details'
 import placeOrder from '../../utils/place-order'
@@ -30,14 +30,14 @@ export default function BurgerConstructor() {
 	)
 
 	const moveFilling = useCallback((from, to) => {
-		dispatch({ type: INGREDIENT_MOVED, payload: { from, to } })
+		dispatch(moveIngredient(from, to))
 	}, [dispatch])
 
 	const [{ isOver }, dropRef] = useDrop(() => ({
 		accept: 'ingredient',
 		collect: monitor => ({ isOver: monitor.isOver() }),
 		drop: (item) => {
-		dispatch({ type: INGREDIENT_ADDED, payload: item })
+		dispatch(addIngredient(item))
 		},
 	}), [dispatch])
 

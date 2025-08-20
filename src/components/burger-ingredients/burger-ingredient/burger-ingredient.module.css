@@ -1,6 +1,5 @@
 .ingredientContainer {
     position: relative;
-    flex: 0 0 calc(50% - 12px);
 }
 
 .counter {
