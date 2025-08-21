@@ -8,12 +8,6 @@
     flex-direction: column;
 }
 
-.elementContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .priceContainer {
     display: flex;
     justify-content: end;
@@ -29,4 +23,8 @@
 .constructorScrolledContainer {
     height: 464px;
     overflow-y: auto;
+}
+
+.over {
+  outline: 2px dashed #4c4cff;
 }

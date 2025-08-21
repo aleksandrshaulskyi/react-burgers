@@ -1,59 +1,51 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { useDispatch, useSelector } from 'react-redux'
 
 import AppStyles from './app.module.css'
 
 import AppHeader from '../app-header/app-header'
 import BurgerConstructor from '../burger-constructor/burger-constructor'
 import BurgerIngredients from '../burger-ingredients/burger-ingredients'
+import fetchIngredients from '../../utils/fetch-ingredients'
 import Notification from '../notification/notification'
 
 
-const YA_API_URL = 'https://norma.nomoreparties.space/api/ingredients'
-
 function App() {
+  const dispatch = useDispatch()
+  const { loading, error } = useSelector(state => state.ingredients)
 
-  const [data, setData] = useState([])
-  const [error, setError] = useState(null)
   const [notificationIsVisible, setNotificationIsVisible] = useState(false)
 
-  useEffect(
-    () => {
-      const fetchData = async () => {
-        try {
-          const response = await fetch(YA_API_URL)
+  useEffect(() => {
+    dispatch(fetchIngredients())
+  }, [dispatch])
 
-          if (!response.ok) {
-            throw new Error('Failed to fetch the data.')
-          }
-
-          const response_data = await response.json()
-
-          setData(response_data.data)
-        } catch(error) {
-          setError(error.message || 'Something went wrong...')
-          setNotificationIsVisible(true)
-        }
-      }
-
-      fetchData()
-    },
-    []
-  )
+  useEffect(() => {
+    if (error) setNotificationIsVisible(true)
+  }, [error])
 
   return (
     <main>
-        {
-          notificationIsVisible && (
-            <Notification error={error} handleClose={() => setNotificationIsVisible(false)} />
-          )
-        }
+      {notificationIsVisible && (
+        <Notification error={error} handleClose={() => setNotificationIsVisible(false)} />
+      )}
+
       <AppHeader />
+
       <div className={AppStyles.contentWrapper}>
-        <BurgerIngredients data={data}/>
-        <BurgerConstructor />
+        {loading ? (
+          <div className={AppStyles.loader}>Loading...</div>
+        ) : (
+          <DndProvider backend={HTML5Backend}>
+            <BurgerIngredients />
+            <BurgerConstructor />
+          </DndProvider>
+        )}
       </div>
     </main>
-  );
+  )
 }
 
-export default App;
+export default App

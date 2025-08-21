@@ -1,0 +1,1 @@
+export const BASE_YA_API_URL = 'https://norma.nomoreparties.space/api/'
