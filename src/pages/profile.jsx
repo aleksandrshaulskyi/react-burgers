@@ -72,12 +72,12 @@ export default function Profile() {
             <AppHeader />
             <div className={ProfileStyles.wrapper}>
                 <div className={ProfileStyles.section}>
-                    <Link to='/profile'>
+                    <Link className={ProfileStyles.link} to='/profile'>
                         <p className='text text_type_main-large'>
                             Профиль
                         </p>
                     </Link>
-                    <Link to='/profile/orders'>
+                    <Link className={ProfileStyles.link} to='/profile/orders'>
                         <p className='text text_type_main-large'>
                             История заказов
                         </p>

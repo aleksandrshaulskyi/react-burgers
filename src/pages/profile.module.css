@@ -25,6 +25,8 @@ p {
     column-gap: 8px;
 }
 
-.link {
+.link,
+.link:visited {
     text-decoration: none;
+    color: inherit;
 }
