@@ -8,15 +8,16 @@ const YA_API_POST_URL = `${BASE_YA_API_URL}orders`
 export default function placeOrder(ingredients) {
     return async function(dispatch) {
         try {
-            const response = await fetch(
+            const response_data = await fetch(
                 YA_API_POST_URL,
-                {method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(ingredients)}
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(ingredients)
+                }
             ).then(
                 checkResponse
             )
-
-            const response_data = await response.json()
 
             dispatch({type: ORDER_PLACEMENT_SUCCESSFULL, payload: response_data})
         } catch(error) {

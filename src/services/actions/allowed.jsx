@@ -1,0 +1,1 @@
+export const IS_ALLOWED_CHANGED = 'IS_ALLOWED_CHANGED'

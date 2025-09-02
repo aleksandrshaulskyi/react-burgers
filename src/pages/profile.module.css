@@ -1,0 +1,30 @@
+p {
+    cursor: pointer;
+}
+
+.wrapper {
+    margin-top: 12%;
+    display: flex;
+    justify-content: center;
+    column-gap: 60px;
+}
+
+.section {
+    width: 400px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.linkContainer {
+    display: flex;
+    column-gap: 8px;
+}
+
+.link {
+    text-decoration: none;
+}
