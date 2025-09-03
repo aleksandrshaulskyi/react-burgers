@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 
 import AppHeader from '../components/app-header/app-header'
@@ -16,6 +16,8 @@ export default function Login() {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const location = useLocation()
+
     const [form, setForm] = useState(
         {
             'email': '',
@@ -33,7 +35,9 @@ export default function Login() {
             const accessToken = responseData.accessToken.split(' ')[1]
             setCookie('accessToken', accessToken, 20 / (24 * 60))
             setCookie('refreshToken', responseData.refreshToken, 1)
-            navigate('/')
+            const params = new URLSearchParams(location.search);
+            const redirect = params.get('redirect') || '/';
+            navigate(redirect, { replace: true });
         }
         catch (error) {
             console.log(error)

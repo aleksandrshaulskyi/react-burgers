@@ -40,17 +40,20 @@ function AppRoutes() {
 			const accessToken = getCookie('accessToken')
 			const refreshToken = getCookie('refreshToken')
 
-			if (!accessToken && refreshToken) {
-				const responseData = await refreshTokens(refreshToken)
+			try {
+				await dispatch(getUser(accessToken))
+			} catch (error) {
+				if (refreshToken) {
+					const responseData = await refreshTokens(refreshToken)
 
-				const newAccessToken = responseData.accessToken.split(' ')[1]
-				const newRefreshToken = responseData.refreshToken
+					const newAccessToken = responseData.accessToken.split(' ')[1]
+					const newRefreshToken = responseData.refreshToken
 
-				setCookie('accessToken', newAccessToken, 20 / (24 * 60))
-				setCookie('refreshToken', newRefreshToken, 1)
-			}
-			else {
-				accessToken && dispatch(getUser(accessToken))
+					setCookie('accessToken', newAccessToken, 20 / (24 * 60))
+					setCookie('refreshToken', newRefreshToken, 1)
+				} else {
+					navigate('/login')
+				}
 			}
 		}
 

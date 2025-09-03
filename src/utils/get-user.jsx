@@ -1,5 +1,5 @@
 import { checkResponse } from './check-response'
-import { USER_CHANGED } from '../services/actions/user'
+import { USER_CHANGED, USER_RETRIEVED } from '../services/actions/user'
 import { BASE_YA_API_URL } from '../config'
 
 
@@ -14,7 +14,10 @@ export function getUser(token) {
             dispatch({type: USER_CHANGED, payload: response_data.user});
         }
         catch (error) {
-          throw error
+            throw error
+        }
+        finally {
+            dispatch({type: USER_RETRIEVED, payload: true})
         }
     };
 }
