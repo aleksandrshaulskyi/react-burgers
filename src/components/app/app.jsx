@@ -51,8 +51,6 @@ function AppRoutes() {
 
 					setCookie('accessToken', newAccessToken, 20 / (24 * 60))
 					setCookie('refreshToken', newRefreshToken, 1)
-				} else {
-					navigate('/login')
 				}
 			}
 		}
