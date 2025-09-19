@@ -1,0 +1,2 @@
+export const USER_CHANGED = 'USER_CHANGED'
+export const USER_RETRIEVED = 'USER_RETRIEVED'

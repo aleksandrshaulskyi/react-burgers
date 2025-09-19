@@ -3,7 +3,6 @@ import { ORDER_PLACEMENT_SUCCESSFULL, ORDER_PLACEMENT_FAILED } from '../actions/
 
 const initialOrderState = { orderData: null, error: null }
 
-
 export const orderReducer = (state=initialOrderState, action) => {
     switch(action.type) {
         case ORDER_PLACEMENT_SUCCESSFULL: {

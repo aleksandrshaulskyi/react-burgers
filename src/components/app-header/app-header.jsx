@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
@@ -7,41 +8,36 @@ import NavItem from './nav-item/nav-item';
 
 
 export default function AppHeader() {
-    const [activeItem, setActiveItem] = useState(null)
-    
-    const handleClick = (event) => {
-        const name = event.currentTarget.getAttribute('name')
-        setActiveItem(name)
-    }
+    const user = useSelector(state => state.user.user)
 
     return (
         <header className={AppHeaderStyles.header}>
             <div className={AppHeaderStyles.content}>
                 <div className={AppHeaderStyles.containerLeft}>
-                    <div name='constructor' className={AppHeaderStyles.navItemContainer} onClick={handleClick}>
+                    <div name='constructor' className={AppHeaderStyles.navItemContainer}>
                         <NavItem
                             icon={BurgerIcon}
-                            isActive={activeItem === 'constructor'}
                             text='Конструктор'
+                            to='/indevelopment'
                         />
                     </div>
-                    <div name='orders' className={AppHeaderStyles.navItemContainer} onClick={handleClick}>
+                    <div name='orders' className={AppHeaderStyles.navItemContainer}>
                         <NavItem
                             icon={ListIcon}
-                            isActive={activeItem === 'orders'} 
                             text='Лента заказов'
+                            to='/indevelopment'
                         />
                     </div>
                 </div>
                 <div className={AppHeaderStyles.containerCenter}>
-                    <Logo />
+                    <Link to='/'><Logo /></Link>
                 </div>
                 <div className={AppHeaderStyles.containerRight}>
-                    <div name='account' className={AppHeaderStyles.navItemContainer} onClick={handleClick}>
+                    <div name='account' className={AppHeaderStyles.navItemContainer}>
                         <NavItem
                             icon={ProfileIcon}
-                            isActive={activeItem === 'account'}
                             text='Личный кабинет'
+                            to={user ? '/profile' : '/login'}
                         />
                     </div>
                 </div>

@@ -10,9 +10,7 @@ export default function fetchIngredients() {
     dispatch({ type: INGREDIENTS_LOADING });
 
     try {
-      const response = await fetch(YA_API_URL).then(checkResponse)
-
-      const response_data = await response.json();
+      const response_data = await fetch(YA_API_URL).then(checkResponse)
 
       dispatch({
         type: INGREDIENTS_LOADING_SUCCESSFULL,
